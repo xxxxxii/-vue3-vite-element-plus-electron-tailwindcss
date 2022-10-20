@@ -6,7 +6,6 @@ export const menusConfig = [
     children: [
       {
         path: "/dashboard",
-        name: "dashboard",
         type: "index",
         title: "router.dashboard",
         icon: "Odometer",
@@ -32,7 +31,6 @@ export const menusConfig = [
     children: [
       {
         path: "/article",
-        name: "article",
         title: "router.article",
         icon: "Tickets",
         meta: {
@@ -41,7 +39,6 @@ export const menusConfig = [
       },
       {
         path: "/articleList",
-        name: "articleList",
         title: "router.articleList",
         icon: "Memo",
         meta: {
@@ -84,7 +81,6 @@ export const menusConfig = [
     children: [
       {
         path: "/iframe/vue",
-        name: "iframe.vue",
         title: "router.iframe.vue",
         meta: {
           role: [2],
@@ -93,7 +89,6 @@ export const menusConfig = [
       },
       {
         path: "/iframe/echarts",
-        name: "iframe.echarts",
         title: "router.iframe.echarts",
         meta: {
           role: [2],

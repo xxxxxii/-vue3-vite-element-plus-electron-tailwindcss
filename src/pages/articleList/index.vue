@@ -1,8 +1,8 @@
 <!--
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-10 22:25:42
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-17 17:38:29
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-20 10:59:01
  * @FilePath: \vue3vite\src\pages\arc\articleList.vue
  * @Description: 
  * 
@@ -46,7 +46,6 @@ const tableMode = ref({
         id: "1",
         label: "Edit",
         type: "warning",
-        // icon: markRaw(IEpTimer),
       },
       {
         id: "2",

@@ -1,15 +1,20 @@
 <!--
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-10-08 00:17:22
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-14 00:11:27
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-20 17:51:29
  * @FilePath: \vue3vite\src\pages\arc\components\arcAddOption.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by yulinZ 1973329248@qq.com, All Rights Reserved. 
 -->
 <template>
-  <div>
+  <el-dialog
+    v-model="isShow"
+    :close-on-click-modal="false"
+    title="Warning"
+    align-center
+  >
     <el-form
       ref="ruleFormRef"
       :model="ruleForm"
@@ -86,15 +91,21 @@
         <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
       </el-form-item>
     </el-form>
-  </div>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
-import UploadImg from "../../../components/uploadImg/index.vue";
+import UploadImg from "@/components/UploadImg/index.vue";
 
 const imageUrl = ref("");
+const props = defineProps({
+  isShow: {
+    type: Boolean,
+  },
+});
+const emit = defineEmits();
 
 const handleAvatarSuccess: UploadProps["onSuccess"] = (
   response,
@@ -135,11 +146,11 @@ const ruleForm = reactive({
 });
 
 const rules = reactive<FormRules>({
-  name: [
+  title: [
     { required: true, message: "Please input Activity name", trigger: "blur" },
     { min: 3, max: 5, message: "Length should be 3 to 5", trigger: "blur" },
   ],
-  region: [
+  bf: [
     {
       required: true,
       message: "Please select Activity zone",
@@ -191,14 +202,18 @@ const rules = reactive<FormRules>({
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
+
   await formEl.validate((valid, fields) => {
     if (valid) {
       console.log("submit!");
+      emit("getForm", ruleForm);
     } else {
       console.log("error submit!", fields);
     }
   });
 };
+
+defineExpose({ submitForm });
 
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;

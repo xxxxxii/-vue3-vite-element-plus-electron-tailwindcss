@@ -2,17 +2,14 @@
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-10-05 14:04:25
+ * @LastEditTime: 2022-10-20 18:55:39
  * @FilePath: \vue3vite\src\pages\login\index.vue
  * @Description:
  *
  * Copyright (c) 2022 by yulinZ 1973329248@qq.com, All Rights Reserved.
 -->
 <template>
-  <div
-    class="login-register bg-green-400"
-    :class="{ 'sign-up-mode': signUpMode }"
-  >
+  <div class="login-register" :class="{ 'sign-up-mode': signUpMode }">
     <!-- form表单容器 -->
 
     <div
@@ -30,16 +27,24 @@
         }"
       >
         <div class="from-content h-full shadow-2xl rounded-lg">
-          <LoginForm
-            v-show="!inAnimation"
-            :login-user="loginUser"
-            :rules="rules"
-          />
-          <RegisterForm
-            v-show="inAnimation"
-            :register-user="registerUser"
-            :register-rules="registerRules"
-          />
+          <div class="flex flex-col items-center justify-center">
+            <div class="w-12 mt-10">
+              <img src="@/assets/logo.png" alt="logo" />
+            </div>
+            <LoginForm
+              v-show="!inAnimation"
+              :login-user="loginUser"
+              :rules="rules"
+            />
+            <RegisterForm
+              v-show="inAnimation"
+              :register-user="registerUser"
+              :register-rules="registerRules"
+            />
+            <button class="xs-btn btn" @click="toregist">
+              {{ !inAnimation ? "注册" : "登录" }}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -141,6 +146,7 @@ const toregist = () => {
 
 <style scoped>
 .login-register {
+  background-color: #40a9ff;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -158,16 +164,17 @@ const toregist = () => {
 
 .bg-left {
   top: -10%;
-  right: 48%;
-  transform: translateY(-50%);
-  background-image: linear-gradient(-45deg, #00caab 0%, #67e7d4 100%);
+  right: 43%;
+  transform: translateY(-40%);
+  background-image: linear-gradient(135deg, #0cebeb, #20e3b2, #29ffc6);
+
   transition: 1.8s ease-in-out;
 }
 .bg-right {
-  top: 160%;
-  right: -75%;
+  top: 120%;
+  right: -40%;
   transform: translateY(-75%);
-  background-image: linear-gradient(-45deg, #00caab 0%, #67e7d4 100%);
+  background-image: linear-gradient(135deg, #0cebeb, #20e3b2, #29ffc6);
   transition: 1.8s ease-in-out;
 }
 .from-box {
@@ -221,12 +228,18 @@ const toregist = () => {
   width: 352px;
   /* background: #000; */
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  /* align-items: center; */
 }
-
+.xs-btn {
+  display: none;
+}
 @media (max-width: 640px) {
   .img-box {
     display: none;
+  }
+  .xs-btn {
+    display: block;
   }
   .from-box {
     width: 90%;
@@ -237,6 +250,22 @@ const toregist = () => {
   .loginForm,
   .registerForm {
     padding: 2rem 5px;
+  }
+
+  .bg-left {
+    top: -0%;
+    right: 60%;
+    transform: translateY(-70%);
+    background-image: linear-gradient(135deg, #0cebeb, #20e3b2, #29ffc6);
+
+    transition: 1.8s ease-in-out;
+  }
+  .bg-right {
+    top: 30%;
+    right: -140%;
+    transform: translateY(-60%);
+    background-image: linear-gradient(135deg, #0cebeb, #20e3b2, #29ffc6);
+    transition: 1.8s ease-in-out;
   }
 }
 
@@ -271,7 +300,7 @@ const toregist = () => {
 /* 左右切换动画 */
 .btn {
   width: 150px;
-  background-color: #00caab;
+  background-color: #1c8af8;
   border: none;
   outline: none;
   height: 49px;

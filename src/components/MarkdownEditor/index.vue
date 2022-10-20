@@ -1,8 +1,8 @@
 <!--
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-13 00:40:40
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-20 17:58:29
  * @FilePath: \vue3vite\src\pages\test\components\editor.vue
  * @Description: 
  * 
@@ -11,8 +11,13 @@
 <template>
   <div class="">
     <div>
-      <div class="cursor-pointer" @click="atalogShow = !atalogShow">
-        <IEpFinished />
+      <div class="text-left">
+        <el-icon
+          class="el-icon--right cursor-pointer"
+          @click="atalogShow = !atalogShow"
+        >
+          <IEpFinished />
+        </el-icon>
       </div>
     </div>
     <div class="flex h-full">
@@ -45,10 +50,8 @@ import "md-editor-v3/lib/style.css";
 import { saveAs } from "file-saver";
 const MdAtalog = MdEditor.MdCatalog;
 import useDarks from "@/hooks/useDarks";
-import { fscr } from "markdown-it/lib/common/entities";
 const { isDark, toggleDark } = useDarks();
 
-import { useDialog } from "@/hooks/useDialog";
 import DialogHtml from "./dialogHtml.vue";
 
 const saveMode = ref(null);
@@ -58,7 +61,7 @@ const atalogShow = ref(false);
 const state = reactive({
   theme: "dark",
   text: `# 标题 
-        ## 3333`,
+          ## 3333`,
   id: "my-editor",
 });
 
@@ -102,25 +105,7 @@ const toolbarsConfig = [
   "catalog",
 ];
 
-const save = (v: string) => {
-  useDialog(DialogHtml, {
-    onRadioValue: (v) => {
-      saveMode.value = v;
-    },
-  })
-    .then((res) => {
-      // 保存为本地md文件
-      if (saveMode.value === 1) {
-        let strData = new Blob([v], { type: "text/plain;charset=utf-8" });
-        saveAs(strData, "测试文件下载.md");
-      } else {
-        // 保存到服务器
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+const save = (v: string) => {};
 
 const onGetCatalog = (list: HeadList[]) => {
   console.log(list);

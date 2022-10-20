@@ -1,8 +1,8 @@
 <!--
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-10 22:25:42
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-17 17:14:17
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-20 10:50:29
  * @FilePath: \vue3vite\src\components\ZTable\zTable.vue
  * @Description: 
  * 
@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import ImagePreview from "../imagePreview/index.vue";
+import ImagePreview from "../ImagePreview/index.vue";
 const props = defineProps({
   tableMode: Object,
 });

@@ -1,8 +1,8 @@
 <!--
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-17 21:31:00
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-19 21:10:49
  * @FilePath: \vue3vite\src\layouts\components\menu\index.vue
  * @Description: 
  * 
@@ -12,14 +12,20 @@
 import MenuItem from "./MenuItem.vue";
 import Banner from "./components/banner/index.vue";
 import { ref, watch } from "vue";
-
 import { useMenuStore } from "@/stores/useMenu";
 
+import { userMenu } from "@/api/menus/menu";
+
 const menuStore = useMenuStore();
-const { menuList, isCollapse } = storeToRefs(menuStore);
+const { isCollapse } = storeToRefs(menuStore);
 
 const route = useRoute();
 
+const menuLists = computed(() => {
+  return menuStore.getMenuList;
+});
+
+// console.log(menuLists);
 const active = ref(route.fullPath);
 
 watch(
@@ -32,11 +38,17 @@ watch(
   }
 );
 
+// const menuList = ref([]);
+// async function initMenu() {
+//   let res = await userMenu();
+//   console.log(res.data.menus);
+//   menuList.value = res.data.menus;
+// }
+// initMenu();
 menuStore.initMenuSet(route.fullPath);
 
 // 设置展开的菜单项
 let defalutOpens = useStorage("defalutOpens", new Set());
-
 let menu = ref(null);
 watch(isCollapse, (newVal, oldVal) => {
   console.log(newVal);
@@ -51,45 +63,29 @@ watch(isCollapse, (newVal, oldVal) => {
   }
 });
 
-// 默认选中的菜单
-function defaultActive() {
-  // addRedirect(router.currentRoute.value.path);
-  // 设置当前路由
-  localStorage.setItem("redirect_name", router.currentRoute.value.path);
-  menuService.initTag(router.currentRoute.value.path);
-  return router.currentRoute.value.path;
-}
-
 const menuSelect = (index, indexPath, item, routeResult) => {
-  console.log(index, indexPath);
   menuStore.setBreadcrumb(indexPath);
-  // console.log(index, indexPath, item, routeResult);
-  // menuService.setBreadcrumb(indexPath);
 };
 
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
   defalutOpens.value.add(key);
-  console.log(defalutOpens.value);
 };
 
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-
   defalutOpens.value.delete(key);
-  console.log(defalutOpens.value);
 };
 </script>
 
 <template>
-  <el-aside class="admin-menu duration-500" :class="{ close: isCollapse }">
-    <div class="w-full h-full" style="">
+  <el-aside class="admin-menu" :class="{ close: isCollapse }">
+    <div class="w-full h-full">
       <div class="flex justify-center">
         <Banner />
       </div>
 
       <el-menu
         ref="menu"
+        :hide-timeout="100"
         :collapse="isCollapse"
         :default-active="active"
         :default-openeds="[...defalutOpens]"
@@ -97,7 +93,7 @@ const handleClose = (key: string, keyPath: string[]) => {
         @open="handleOpen"
         @close="handleClose"
       >
-        <menu-item :sub-menu="menuList" />
+        <menu-item :sub-menu="menuLists" />
       </el-menu>
       <teleport to="body">
         <div
@@ -113,12 +109,13 @@ const handleClose = (key: string, keyPath: string[]) => {
 <style lang="scss" scoped>
 .el-menu {
   border-right: none;
+  // background-color: rgba(1, 1, 1, 0);
 }
 .admin-menu::-webkit-scrollbar {
   width: 0 !important;
 }
 .admin-menu {
-  @apply w-[250px]  min-h-screen h-full border-r border-solid z-50;
+  @apply w-[200px] min-h-screen h-full border-r border-solid z-50 md:duration-300;
   &.close {
     @apply w-[70px];
   }
@@ -126,10 +123,13 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 @media screen and (max-width: 766px) {
   .admin-menu {
-    @apply w-[250px] duration-500 bg-white dark:bg-black  absolute top-0 left-0 min-h-screen h-full border-r border-solid;
+    @apply w-[200px] bg-white dark:bg-black top-0 left-0 min-h-screen h-full border-r border-solid;
     &.close {
-      @apply left-[-250px] duration-500;
+      @apply left-[-250px];
     }
+  }
+  .admin-menu {
+    transition: all 0;
   }
   .bg {
     @apply bg-gray-600 w-screen h-screen z-20 opacity-75  absolute left-0 top-0;

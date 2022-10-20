@@ -1,8 +1,8 @@
 <!--
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-10-02 12:39:47
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-17 10:17:14
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-21 04:32:04
  * @FilePath: \vue3vite\src\layouts\components\header\header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -46,7 +46,7 @@ function taget() {
       </div>
     </div>
     <div class="flex align-center items-center">
-      <Breadcrumb />
+      <Breadcrumb class="hidden md:block" />
     </div>
     <div class="flex items-center gap-2 justify-end h-full flex-1">
       <!-- <Translate /> -->
@@ -57,7 +57,7 @@ function taget() {
       <Avatar />
     </div>
   </el-header>
-  <div v-if="historyShow" class="border-b flex justify-between pl-5 pr-5">
+  <div v-if="historyShow" class="flex justify-between pl-5 pr-5">
     <TagPages />
   </div>
 </template>

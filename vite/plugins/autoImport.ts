@@ -1,8 +1,8 @@
 /*
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-16 03:12:03
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-18 14:36:41
  * @FilePath: \vue3vite\vite\plugins\autoImport.ts
  * @Description:
  *
@@ -36,7 +36,9 @@ export default function autoImport() {
   return [
     AutoImport({
       resolvers: [
+        AntDesignVueResolver(),
         ElementPlusResolver(),
+
         IconsResolver({
           prefix: "i",
         }),

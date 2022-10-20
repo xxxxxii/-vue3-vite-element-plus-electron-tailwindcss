@@ -1,8 +1,8 @@
 <!--
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-10-07 18:45:51
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-16 21:39:03
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-20 17:48:46
  * @FilePath: \vue3vite\src\pages\arc\addOrEdit.vue
  * @Description: 
  * 
@@ -10,24 +10,23 @@
 -->
 <template>
   <div>
-    <el-button type="primary" @click="titleSetting()">标题信息设置</el-button>
+    <el-button type="primary" @click="titleSetShow = true"
+      >标题信息设置</el-button
+    >
     <div>
-      <editor />
+      <!-- <Editor /> -->
+      <MarkdownEditor></MarkdownEditor>
     </div>
+    <ArcAddOption :isShow="titleSetShow" @getForm="getForm" />
   </div>
 </template>
 
 <script setup lang="ts">
-import Editor from "./components/editor.vue";
 import ArcAddOption from "./components/arcAddOption.vue";
-import { useDialog } from "@/hooks/useDialog";
+import MarkdownEditor from "@/components/MarkdownEditor/index.vue";
 
-const titleSetting = () => {
-  useDialog(ArcAddOption, { onConfirm: () => {} });
-  // ElMessageBox({
-  //   title: "Message",
-  //   closeOnClickModal: false,
-  //   message: () => h(ArcAddOption),
-  // });
+const titleSetShow = ref(false);
+const getForm = (val: any) => {
+  console.log(val);
 };
 </script>

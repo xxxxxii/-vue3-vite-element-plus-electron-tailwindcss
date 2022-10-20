@@ -1,8 +1,8 @@
 <!--
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-17 19:32:25
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-19 23:28:41
  * @FilePath: \vue3vite\src\layouts\components\avatar\index.vue
  * @Description:
  *
@@ -39,7 +39,8 @@
 </template>
 
 <script setup>
-import userServe from "@/hooks/useUsers";
+import { useUserStore } from "@/stores/useUser";
+const userStore = useUserStore();
 
 const { t } = useI18n();
 const router = useRouter();
@@ -80,7 +81,7 @@ function showtime() {
 }
 
 function logout() {
-  userServe.removeToken();
+  userStore.clearToken();
   router.push({ path: "/login" });
 }
 

@@ -1,8 +1,8 @@
 <!--
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-16 21:52:02
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-20 18:03:35
  * @FilePath: \vue3vite\src\pages\login\components\LoginForm.vue
  * @Description: 
  * 
@@ -63,6 +63,7 @@
     </el-form-item> -->
     <el-form-item>
       <el-button
+        :loading="loading"
         @click="handleLogin(loginForm)"
         type="primary"
         class="submit-btn"
@@ -71,7 +72,11 @@
     </el-form-item>
     <!-- 找回密码 -->
     <div class="tiparea">
-      <p>忘记密码？ <a>立即找回</a></p>
+      <p>
+        <span class="text-white dark:text-black">
+          忘记密码？ <a>立即找回</a></span
+        >
+      </p>
     </div>
   </el-form>
 </template>
@@ -81,9 +86,14 @@ import { ref } from "vue";
 
 import _ from "lodash";
 // import ImageVerify from "@/components/ImageVerify/index.vue";
-import userServe from "@/hooks/useUsers";
-import type { FormInstance, FormRules } from "element-plus";
-// import { login } from '../../serve/api';
+
+import { FormInstance, FormRules } from "element-plus";
+import { useUserStore } from "@/stores/useUser";
+import pinia from "@/stores/store";
+const userStore = useUserStore(pinia);
+
+const router = useRouter();
+const route = useRoute();
 
 const verifyRef = ref(null);
 const loginForm = ref(null);
@@ -119,8 +129,19 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   }, 2000).call(this);
 };
 
+const loading = ref(false);
 function toLogin() {
-  userServe.login(props.loginUser);
+  // userServe.login(props.loginUser);
+  userStore.login(props.loginUser).then(() => {
+    console.log(route.query.redirect);
+    router.push({ path: route.query.redirect || "/" });
+    loading.value = true;
+    ElNotification({
+      type: "success",
+      message: "登录成功",
+      duration: 3600,
+    });
+  });
 }
 </script>
 <style scoped>

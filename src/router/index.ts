@@ -1,8 +1,8 @@
 /*
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-10-01 12:53:46
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-10-17 21:07:56
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2022-10-21 04:27:11
  * @FilePath: \vue3vite\src\router\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,9 +12,6 @@ import {
   createWebHistory,
   createWebHashHistory,
 } from "vue-router";
-
-import loadingServe from "@/hooks/useLoading";
-import { nprogressStart, nprogressClose } from "@/hooks/useNporgress";
 
 export const routes = [
   {
@@ -30,9 +27,14 @@ export const routes = [
         component: () => import("@/pages/article/index.vue"),
       },
       {
+        path: "/articleList",
+        name: "ArticleList",
+        component: () => import("@/pages/articleList/index.vue"),
+      },
+      {
         path: "/md",
         name: "Md",
-        component: () => import("@/pages/md/index.vue"),
+        component: () => import("@/pages/md/index.md"),
       },
       {
         path: "/test",
@@ -42,13 +44,9 @@ export const routes = [
       {
         path: "/dashboard",
         name: "Dashboard",
-        component: () => import("@/pages/dashboard/index.vue"),
+        component: () => import("@/pages/dashboard/Analysis.vue"),
       },
-      {
-        path: "/articleList",
-        name: "ArticleList",
-        component: () => import("@/pages/articleList/index.vue"),
-      },
+
       {
         path: "/user",
         name: "User",
@@ -77,11 +75,6 @@ export const routes = [
     name: "Login",
     component: () => import("@/pages/login/index.vue"),
   },
-  {
-    path: "/index",
-    name: "Index",
-    component: () => import("@/pages/webframe/index.vue"),
-  },
 ];
 const router = createRouter({
   history:
@@ -89,40 +82,6 @@ const router = createRouter({
       ? createWebHashHistory()
       : createWebHistory(),
   routes,
-});
-
-// 路由白名单，不需要登陆即可使用
-const whiteList = ["/login", "/index"];
-
-router.beforeEach((to, from, next) => {
-  nprogressStart();
-  // if (whiteList.includes(to.path)) {
-  //   loadingServe.showLoading();
-  // } else {
-  //   loadingServe.showLoading(".el-main");
-  // }
-
-  // 检查用户是否已登录
-  if (sessionStorage.getItem("token")) {
-    if (to.path === "/login") {
-      next({
-        path: "/",
-      });
-    } else {
-      next();
-    }
-  } else {
-    if (whiteList.includes(to.path)) {
-      next();
-    } else {
-      next("/login");
-    }
-  }
-});
-
-router.afterEach(() => {
-  nprogressClose();
-  // loadingServe.hideLoading();
 });
 
 export default router;
