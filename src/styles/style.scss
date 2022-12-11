@@ -1,0 +1,60 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  color: #57606f;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  --color-bg:#fff;
+  --color-text:rgb(34, 34, 34);
+}
+html.dark {
+  color: #a4b0be;
+  --color-bg: #000;
+  --color-text:rgb(212, 212, 212);
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.card {
+  padding: 2em;
+}
+
+.right-menu {
+  width: 100px;
+  padding: 5px 10px;
+  position: absolute;
+  background-color: var(--color-bg);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--color-text);
+  z-index: 9999;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  > li {
+    padding: 5px 2px;
+    list-style: none;
+    &:hover {
+      color: #3477f2;
+    }
+  }
+}

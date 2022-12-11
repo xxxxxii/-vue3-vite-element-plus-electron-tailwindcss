@@ -2,7 +2,7 @@
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-10-19 21:10:49
+ * @LastEditTime: 2022-12-11 19:42:12
  * @FilePath: \vue3vite\src\layouts\components\menu\index.vue
  * @Description: 
  * 
@@ -13,19 +13,13 @@ import MenuItem from "./MenuItem.vue";
 import Banner from "./components/banner/index.vue";
 import { ref, watch } from "vue";
 import { useMenuStore } from "@/stores/useMenu";
-
-import { userMenu } from "@/api/menus/menu";
+import { useUserStore } from "@/stores/useUser";
+const { routers } = useUserStore();
 
 const menuStore = useMenuStore();
 const { isCollapse } = storeToRefs(menuStore);
 
 const route = useRoute();
-
-const menuLists = computed(() => {
-  return menuStore.getMenuList;
-});
-
-// console.log(menuLists);
 const active = ref(route.fullPath);
 
 watch(
@@ -38,22 +32,13 @@ watch(
   }
 );
 
-// const menuList = ref([]);
-// async function initMenu() {
-//   let res = await userMenu();
-//   console.log(res.data.menus);
-//   menuList.value = res.data.menus;
-// }
-// initMenu();
-menuStore.initMenuSet(route.fullPath);
-
 // 设置展开的菜单项
-let defalutOpens = useStorage("defalutOpens", new Set());
-let menu = ref(null);
+let defalutOpens: any = useStorage("defalutOpens", new Set());
+let menu = ref();
 watch(isCollapse, (newVal, oldVal) => {
   console.log(newVal);
   if (!newVal) {
-    defalutOpens.value.forEach((item) => {
+    defalutOpens.value.forEach((item: string) => {
       try {
         menu.value.open(item);
       } catch (err) {
@@ -63,9 +48,13 @@ watch(isCollapse, (newVal, oldVal) => {
   }
 });
 
-const menuSelect = (index, indexPath, item, routeResult) => {
-  menuStore.setBreadcrumb(indexPath);
-};
+const menuMode = computed(() => {
+  return import.meta.env.VITE_MENU_OPENS as boolean;
+});
+
+const openMenus = computed(() => {
+  return menuMode ? [...defalutOpens.value] : [];
+});
 
 const handleOpen = (key: string, keyPath: string[]) => {
   defalutOpens.value.add(key);
@@ -88,17 +77,17 @@ const handleClose = (key: string, keyPath: string[]) => {
         :hide-timeout="100"
         :collapse="isCollapse"
         :default-active="active"
-        :default-openeds="[...defalutOpens]"
-        @select="menuSelect"
+        :unique-opened="!menuMode"
+        :default-openeds="openMenus"
         @open="handleOpen"
         @close="handleClose"
       >
-        <menu-item :sub-menu="menuLists" />
+        <menu-item :sub-menu="routers" />
       </el-menu>
       <teleport to="body">
         <div
           v-show="!isCollapse"
-          class="bg block md:hidden"
+          class="block bg md:hidden"
           @click="menuStore.toggleState"
         ></div>
       </teleport>
@@ -107,15 +96,16 @@ const handleClose = (key: string, keyPath: string[]) => {
 </template>
 
 <style lang="scss" scoped>
+.el-aside {
+  color: var(--el-text-color-primary);
+  overflow-x: hidden;
+}
 .el-menu {
   border-right: none;
-  // background-color: rgba(1, 1, 1, 0);
-}
-.admin-menu::-webkit-scrollbar {
-  width: 0 !important;
+  height: calc(100vh - 70px);
 }
 .admin-menu {
-  @apply w-[200px] min-h-screen h-full border-r border-solid z-50 md:duration-300;
+  @apply w-[220px]  bg-white dark:bg-black min-h-screen h-full border-r border-solid z-50;
   &.close {
     @apply w-[70px];
   }
@@ -123,13 +113,10 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 @media screen and (max-width: 766px) {
   .admin-menu {
-    @apply w-[200px] bg-white dark:bg-black top-0 left-0 min-h-screen h-full border-r border-solid;
+    @apply w-[220px]  bg-white dark:bg-black absolute top-0 left-0 min-h-screen h-full border-r border-solid;
     &.close {
-      @apply left-[-250px];
+      @apply left-[-220px];
     }
-  }
-  .admin-menu {
-    transition: all 0;
   }
   .bg {
     @apply bg-gray-600 w-screen h-screen z-20 opacity-75  absolute left-0 top-0;

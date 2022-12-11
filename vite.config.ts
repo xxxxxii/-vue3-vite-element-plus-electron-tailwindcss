@@ -2,37 +2,23 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-16 17:17:23
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-10-19 17:40:45
+ * @LastEditTime: 2022-12-09 16:46:32
  * @FilePath: \vue3-element-admin\vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { resolve } from "path";
-
+import path from "path";
+import { getEnv } from "./vite/util";
+const env = getEnv();
 import viteSetting from "./vite/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
-  // plugins: [
-
-  //   vue({ include: [/\.vue$/, /\.md$/] }),
-  //   setupI18n(),
-  //   AutoImport({
-  //     resolvers: [ElementPlusResolver()],
-  //     imports: ["vue", "vue-router", "@vueuse/core", "vue-i18n", "pinia"],
-  //     // 可以选择auto-import.d.ts生成的位置，使用ts建议设置为'src/auto-import.d.ts'
-  //     dts: "src/auto-import.d.ts",
-  //   }),
-  //   Components({
-  //     resolvers: [ElementPlusResolver()],
-  //   }),
-  // ],
-  plugins: viteSetting(),
+  plugins: [...viteSetting()],
   server: {
     host: true,
-    port: 3000,
+    port: env.VITE_PORT as unknown as number,
     proxy: {
       "/blogApi": {
         target: "https://www.blogyl.top/blogApi",
@@ -47,7 +33,13 @@ export default defineConfig({
       },
     },
   },
+  // resolve: {
+  //   alias: [{ find: "@", replacement: resolve(__dirname, "src") }],
+  // },
   resolve: {
-    alias: [{ find: "@", replacement: resolve(__dirname, "src") }],
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "#": path.resolve(__dirname, "./"),
+    },
   },
 });

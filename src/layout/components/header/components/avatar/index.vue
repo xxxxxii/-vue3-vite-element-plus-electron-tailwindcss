@@ -2,7 +2,7 @@
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-10-19 23:28:41
+ * @LastEditTime: 2022-12-11 18:52:36
  * @FilePath: \vue3vite\src\layouts\components\avatar\index.vue
  * @Description:
  *
@@ -15,8 +15,10 @@
     src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
   />
   <div class="flex flex-col items-start">
-    <span class="font-sans text-sm font-medium">{{ t("hello") }} {{}}</span>
-    <span class="font-sans text-xs hidden md:block">{{ currentDate }}</span>
+    <span class="font-sans text-sm font-medium"
+      >{{ t("hello") }} {{ useUserStore()?.name || "" }}</span
+    >
+    <span class="hidden font-sans text-xs md:block">{{ currentDate }}</span>
   </div>
   <el-dropdown>
     <el-icon

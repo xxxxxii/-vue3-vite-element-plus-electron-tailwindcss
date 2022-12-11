@@ -7,7 +7,6 @@
   "golbal.welcome.message.hello_evening": "Good evening",
   "golbal.logout.message.confirm": "Do you confirm to exit the system?",
   "golbal.logout.message.success": "Logout successfully",
-  "global_title": "Miao Miao Admin",
   "global.history.dropdown.option.reload": "Reload",
   "global.history.dropdown.option.closeSelf": "Close self",
   "global.history.dropdown.option.closeLeft": "Close Left",
@@ -21,11 +20,19 @@
   "router.postcard": "Postcard",
 	"router.markdown": "Markdown",
 	"router.test": "Test",
-	"router.user": "User",
+	"router.user": "User Marger",
+  "router.userList": "User List",
+  "router.userPermissions": "User Permissions",
+  "router.userPermissionsSetting": "User Permissions Set",
+ 
 	"router.md": "Markdown",
 	"router.ifarme":"Iframe",
 	"router.iframe.vue":"vue.js",
 	"router.iframe.echarts":"ECharts",
+  "router.iframe.vue-router":"Vue-Router",
+  "router.iframe.yl-blog":"Yl Blog",
+
+
   "router.article": "Article",
   "router.articleList": "Article List",
   "router.articleMarger":"Article Marger",

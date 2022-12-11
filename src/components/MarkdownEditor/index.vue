@@ -2,36 +2,18 @@
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-10-20 17:58:29
+ * @LastEditTime: 2022-12-09 17:46:20
  * @FilePath: \vue3vite\src\pages\test\components\editor.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by yulinZ 1973329248@qq.com, All Rights Reserved. 
 -->
 <template>
-  <div class="">
-    <div>
-      <div class="text-left">
-        <el-icon
-          class="el-icon--right cursor-pointer"
-          @click="atalogShow = !atalogShow"
-        >
-          <IEpFinished />
-        </el-icon>
-      </div>
-    </div>
+  <div class="h-full">
     <div class="flex h-full">
-      <md-atalog
-        v-show="atalogShow"
-        class="atalog border-solid h-full"
-        :editor-id="state.id"
-        :scroll-element="scrollElement"
-        :theme="state.theme"
-      />
       <md-editor
-        class="h-full"
+        class="md-editor"
         :showCodeRowNumber="true"
-        :toolbars="toolbarsConfig"
         previewTheme="default"
         codeTheme="github"
         v-model="state.text"
@@ -45,65 +27,21 @@
 </template>
 
 <script setup lang="ts">
-import MdEditor from "md-editor-v3";
+import MdEditor, { HeadList } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
-import { saveAs } from "file-saver";
-const MdAtalog = MdEditor.MdCatalog;
+// import { saveAs } from "file-saver";
 import useDarks from "@/hooks/useDarks";
 const { isDark, toggleDark } = useDarks();
 
-import DialogHtml from "./dialogHtml.vue";
-
-const saveMode = ref(null);
-
-const atalogShow = ref(false);
-
 const state = reactive({
   theme: "dark",
-  text: `# 标题 
-          ## 3333`,
+  text: `# 标题\n## 这是markdown 编辑器`,
   id: "my-editor",
 });
-
-const scrollElement = document.documentElement;
 
 const themeMode = computed(() => {
   return isDark.value ? "dark" : "light";
 });
-
-let text = ref("# 123153425");
-
-const toolbarsConfig = [
-  "bold",
-  "underline",
-  "italic",
-  "-",
-  "title",
-  "strikeThrough",
-  "sub",
-  "sup",
-  "quote",
-  "unorderedList",
-  "orderedList",
-  "-",
-  "codeRow",
-  "code",
-  "link",
-  "image",
-  "table",
-  "mermaid",
-  "katex",
-  "-",
-  "revoke",
-  "next",
-  "save",
-  "=",
-  "pageFullscreen",
-  "fullscreen",
-  "preview",
-  "htmlPreview",
-  "catalog",
-];
 
 const save = (v: string) => {};
 
@@ -129,5 +67,8 @@ const onGetCatalog = (list: HeadList[]) => {
   background-color: v-bind(
     themeMode === "dark" ? "rgba(0,1,1,1)": "rgba(1,1,1,0)"
   ) !important;
+}
+.md-editor {
+  height: calc(100% - 40px);
 }
 </style>

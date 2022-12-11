@@ -2,94 +2,93 @@
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-10-18 20:49:53
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-10-19 19:35:11
+ * @LastEditTime: 2022-12-11 19:55:43
  * @FilePath: \vue3-element-admin\src\permission.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import router from "./router";
 import { nprogressStart, nprogressClose } from "@/hooks/useNporgress";
 
 import pinia from "@/stores/store";
 import { useUserStore } from "@/stores/useUser";
+import { useHistoryStore } from "@/stores/history";
+import useLoading from "@/hooks/useLoading";
+const { hideLoading, showLoading } = useLoading;
+import { RouteLocationNormalized, Router, _RouteRecordBase } from "vue-router";
 
 // 路由白名单，不需要登陆即可使用
-const whiteList = ["/login", "/index"];
+const whiteList = ["/login"];
 
-router.beforeEach(async (to, from, next) => {
-  const useUser = useUserStore(pinia);
-  const { token } = storeToRefs(useUser);
-  console.log(useUser);
-  // start progress bar
-  nprogressStart();
-  // set page title
-  //   document.title = getPageTitle(to.meta.title);
+export function guard(router: Router) {
+  let hasRoles = true;
+  router.beforeEach(async (to, from, next) => {
+    const useUser = useUserStore(pinia);
+    // start progress bar
+    showLoading();
+    nprogressStart();
 
-  // determine whether the user has logged in
+    let hasToken = useUser.getToken;
 
-  let hasToken = useUser.getToken;
-  console.log(hasToken);
-  if (hasToken) {
-    console.log(to, from);
-
-    if (to.path === "/login") {
-      // if is logged in, redirect to the home page
-      next({ path: "/" });
-      nprogressClose(); // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
-    } else {
-      console.log(to, from);
-      // determine whether the user has obtained his permission roles through getInfo
-      let roles = useUser.roles;
-      const hasRoles = roles.length > 0;
-
-      if (hasRoles) {
-        router.addRoute({
-          path: "/:w+",
-          name: "*",
-          component: () => import("@/pages/404/404.vue"),
-        });
-        next();
+    if (hasToken) {
+      if (to.path === "/login") {
+        // if is logged in, redirect to the home page
+        next({ path: "/" });
+        nprogressClose(); // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
       } else {
-        try {
-          // get user info
-          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          //   const { roles } = await store.dispatch("user/getInfo");
+        // determine whether the user has obtained his permission roles through getInfo
+        // let roles = useUser.roles;
+        // let hasRoles = roles.length > 0;
 
-          // generate accessible routes map based on roles
-          //   const accessRoutes = await store.dispatch(
-          //     "permission/generateRoutes",
-          //     roles
-          //   );
+        // 动态生成路由 根据role 生成动态菜单，路由
+        useUserStore().setUser({ role: useUserStore().users.role });
+        let routes = useUserStore().routers;
+        if (hasRoles) {
+          routes.forEach((item) => {
+            console.log(item);
+            router.addRoute("Layout", item);
+          });
 
-          // dynamically add accessible routes
-          //   router.addRoutes(accessRoutes);
-
-          // hack method to ensure that addRoutes is complete
-          // set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true });
-        } catch (error) {
-          // remove token and go to login page to re-login
-          //   await store.dispatch("user/resetToken");
-          ElMessage.error(error || "Has Error");
-          next(`/login?redirect=${to.path}`);
-          nprogressClose();
+          // router.addRoute({
+          //   path: "/:w+",
+          //   name: "*",
+          //   component: () => import("@/pages/404/404.vue"),
+          // });
+          hasRoles = false;
+          next({ ...to, replace: true }); // 这里相当于push到一个页面 不在进入路由拦截
+        } else {
+          next(); // 如果不传参数就会重新执行路由拦截，重新进到这里
         }
       }
-    }
-  } else {
-    /* has no token*/
-
-    if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
-      next();
     } else {
-      // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`);
-      nprogressClose();
+      /* has no token*/
+      // 是否在白名单内
+      if (whiteList.indexOf(to.path) !== -1) {
+        // in the free login whitelist, go directly
+        next();
+      } else {
+        // other pages that do not have permission to access are redirected to the login page.
+        next(`/login?redirect=${to.path}`);
+        nprogressClose();
+      }
     }
-  }
-});
+  });
 
-router.afterEach(() => {
-  // finish progress bar
-  nprogressClose();
-});
+  router.afterEach((to: RouteLocationNormalized): void => {
+    hideLoading();
+    nprogressClose();
+
+    // 添加缓存路由
+    if (to.name && to.meta && to.meta.needCache) {
+      useHistoryStore().addCacheView(to.name.toString());
+    }
+    const { name, path, meta, params, query } = to;
+    if (to.meta && !to.meta.notNeedAuth) {
+      useHistoryStore().addVisitedView({
+        name,
+        path,
+        meta,
+        params,
+        query,
+      } as _RouteRecordBase);
+    }
+  });
+}

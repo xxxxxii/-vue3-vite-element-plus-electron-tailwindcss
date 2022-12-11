@@ -10,7 +10,7 @@ export const menusConfig = [
         title: "router.dashboard",
         icon: "Odometer",
         meta: {
-          role: [1],
+          // role: [1],
         },
       },
       {
@@ -19,7 +19,7 @@ export const menusConfig = [
         title: "router.user",
         icon: "User",
         meta: {
-          role: [1],
+          role: [3],
         },
       },
     ],
