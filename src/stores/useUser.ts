@@ -38,7 +38,7 @@ export const useUserStore = defineStore("user", {
       console.log(user, dynaRouters);
       const routers = markRaw(dynaRouters);
       const accessedRouters = filterAsyncRouter(routers, user.role);
-      this.users = user;
+
       console.log(user, accessedRouters);
       this.routers = accessedRouters;
       // handleFixedVisitedViews(tagsStore(), routers);
@@ -65,14 +65,11 @@ export const useUserStore = defineStore("user", {
       };
       return new Promise<void>((resolve, reject) => {
         loginApi(loginFrom)
-          .then((response: { data: any }) => {
+          .then((response: any) => {
             const { token, info } = response.data;
-            // console.log(info);
+            console.log(token, info)
             this.token = token;
-            // this.avatar = info.avatar || "";
-            // this.roles = info.role;
-            // this.name = info.username;
-            //
+            this.users = info;
             this.setUser(info);
             resolve();
           })
