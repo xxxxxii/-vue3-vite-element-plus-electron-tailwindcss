@@ -12,13 +12,13 @@
   <el-avatar
     shape="square"
     :size="40"
-    src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+    :src="useUserStore().users.avatar "
   />
   <div class="flex flex-col items-start">
     <span class="font-sans text-sm font-medium"
-      >{{ t("hello") }} {{ useUserStore()?.name || "" }}</span
+      >{{ t("hello") }} {{ useUserStore()?.users?.username || "" }}</span
     >
-    <span class="hidden font-sans text-xs md:block">{{ currentDate }}</span>
+    <span class="hidden font-sans text-xs md:block w-[128px] text-left">{{ currentDate }}</span>
   </div>
   <el-dropdown>
     <el-icon
