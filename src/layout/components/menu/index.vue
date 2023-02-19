@@ -2,7 +2,7 @@
  * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-09-11 17:47:25
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-12-11 19:42:12
+ * @LastEditTime: 2022-12-11 23:46:01
  * @FilePath: \vue3vite\src\layouts\components\menu\index.vue
  * @Description: 
  * 
@@ -49,7 +49,7 @@ watch(isCollapse, (newVal, oldVal) => {
 });
 
 const menuMode = computed(() => {
-  return import.meta.env.VITE_MENU_OPENS as boolean;
+  return import.meta.env.VITE_MENU_OPENS === "true";
 });
 
 const openMenus = computed(() => {

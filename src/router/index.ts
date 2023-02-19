@@ -1,8 +1,16 @@
 /*
  * @Author: yulinZ 1973329248@qq.com
+ * @Date: 2022-12-11 05:39:05
+ * @LastEditors: yulinZ 1973329248@qq.com
+ * @LastEditTime: 2023-02-17 12:44:27
+ * @FilePath: \-vue3-vite-element-plus-electron-tailwindcss\src\router\index.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+/*
+ * @Author: yulinZ 1973329248@qq.com
  * @Date: 2022-10-01 12:53:46
  * @LastEditors: yulinZ 1973329248@qq.com
- * @LastEditTime: 2022-12-11 21:56:29
+ * @LastEditTime: 2023-02-16 18:04:56
  * @FilePath: \vue3vite\src\router\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -189,7 +197,13 @@ export const dynaRouters: Array<RouteRecordRaw & MenuProps> = [
       },
     ],
   },
-
+  {
+    path: "/imgLayz",
+    name: "ImgLayz",
+    hidden: false,
+    meta: { title: "router.ImgLayz" },
+    component: () => import("@/pages/imgLayz/index.vue"),
+  },
   {
     path: "/error",
     name: "NotFound",
